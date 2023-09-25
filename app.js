@@ -38,14 +38,14 @@ app.use(express.json())
 // Define a route
 app.post('/orders', async (req, res) => {
     var customerDetails = new CFCustomerDetails();
-    customerDetails.customerId = "some_random_id";
-    customerDetails.customerPhone = "9999999999";
-    customerDetails.customerEmail = "b.a@cashfree.com";
+    customerDetails.customerId = req.body.customerId;
+    customerDetails.customerPhone = req.body.customerPhone;
+    customerDetails.customerEmail = req.body.customerEmail;
     var d = {};
     d["order_tag_01"] = "TESTING IT";
 
     var cFOrderRequest = new CFOrderRequest();
-    cFOrderRequest.orderAmount = 1;
+    cFOrderRequest.orderAmount = req.body.orderAmount;
     cFOrderRequest.orderCurrency = "INR";
     cFOrderRequest.customerDetails = customerDetails;
     cFOrderRequest.orderTags = d;
@@ -101,19 +101,20 @@ app.post('/order/payWithCard', async(req,res) => {
     }
 })
 
+// "testsuccess@gocash"
 app.post('/order/payWithUPICollect', async(req,res) => {
     try {
         let paymentSessionId = req.body.paymentSessionId
         var cfUpi = new CFUPI();
         cfUpi.channel = CFUPI.ChannelEnum.Collect;
-        cfUpi.upiId = "testsuccess@gocash";
+        cfUpi.upiId = req.body.upiId;
         var cFUPIPayment = new CFUPIPayment();
         cFUPIPayment.upi = cfUpi;
         var cFOrderPayRequest = new CFOrderPayRequest();
         cFOrderPayRequest.paymentSessionId = paymentSessionId;
         cFOrderPayRequest.paymentMethod = cFUPIPayment;
         var apiInstance = new CFPaymentGateway();
-        var cfPayResponse = await apiInstance.orderSessionsPay(
+        var cfPayResponse = await apiInstance∫.orderSessionsPay(
             testCfConfig,
             cFOrderPayRequest
         );
@@ -159,33 +160,7 @@ app.post('/order/payWithUPIIntent', async(req,res) => {
     }
 })
 
-app.post('/order/payWithUPIIntent', async(req,res) => {
-    try {
-        let paymentSessionId = req.body.paymentSessionId
-        var cfUpi = new CFUPI();
-        cfUpi.channel = CFUPI.ChannelEnum.Link;
-        var cFUPIPayment = new CFUPIPayment();
-        cFUPIPayment.upi = cfUpi;
-        var cFOrderPayRequest = new CFOrderPayRequest();
-        cFOrderPayRequest.paymentSessionId = paymentSessionId;
-        cFOrderPayRequest.paymentMethod = cFUPIPayment;
-        var apiInstance = new CFPaymentGateway();
-        var cfPayResponse = await apiInstance.orderSessionsPay(
-            testCfConfig,
-            cFOrderPayRequest
-        );
-        if (cfPayResponse != null) {
-            // console.log("result.OrderId");
-            console.log(cfPayResponse?.cfOrderPayResponse?.data);
-            console.log(cfPayResponse?.cfHeaders);
-            res.status(200).send(cfPayResponse)
 
-        }
-    } catch (e) {
-        console.log(e);
-        res.status(400).json({error: e.message})
-    }
-})
 
 
 app.post('/order/payWithUPIQRCode', async(req,res) => {
