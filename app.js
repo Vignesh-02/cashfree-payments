@@ -114,7 +114,7 @@ app.post('/order/payWithUPICollect', async(req,res) => {
         cFOrderPayRequest.paymentSessionId = paymentSessionId;
         cFOrderPayRequest.paymentMethod = cFUPIPayment;
         var apiInstance = new CFPaymentGateway();
-        var cfPayResponse = await apiInstance∫.orderSessionsPay(
+        var cfPayResponse = await apiInstance.orderSessionsPay(
             testCfConfig,
             cFOrderPayRequest
         );
