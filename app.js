@@ -97,7 +97,7 @@ app.post('/order/payWithCard', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 })
 
@@ -127,7 +127,7 @@ app.post('/order/payWithUPICollect', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+        res.status(e.statusCode).json({error: e.body.message})
     }
 })
 
@@ -156,7 +156,7 @@ app.post('/order/payWithUPIIntent', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 })
 
@@ -186,7 +186,7 @@ app.post('/order/payWithUPIQRCode', async(req,res) => {
             }
         } catch (e) {
             console.log(e);
-            res.status(400).json({error: e.message})
+                    res.status(e.statusCode).json({error: e.body.message})
         }
 })
 
@@ -216,7 +216,7 @@ app.post('/order/payWithNetBanking', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 
 })
@@ -254,7 +254,7 @@ app.post('/order/payWithAppWallet', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 
 })
@@ -278,7 +278,7 @@ app.get('/order', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 })
 
@@ -299,7 +299,7 @@ app.get('/order/payments', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     }
 })
 
@@ -338,7 +338,7 @@ app.post('/paymentLinks', async(req,res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e.message})
+                res.status(e.statusCode).json({error: e.body.message})
     
     }
 })
