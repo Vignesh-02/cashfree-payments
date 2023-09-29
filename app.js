@@ -61,10 +61,15 @@ app.post('/orders', async (req, res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e})
+        res.status(e.statusCode).json({error: e.body.message})
     }
 
 });
+
+// cFCard.cardNumber = "4111111111111111";
+// cFCard.cardCvv = "123";
+// cFCard.cardExpiryMm = "12";
+// cFCard.cardExpiryYy = "25";
 
 app.post('/order/payWithCard', async(req,res) => {
     try {
@@ -73,10 +78,10 @@ app.post('/order/payWithCard', async(req,res) => {
         var cFCard = new CFCard();
         cFCard.channel = "link";
         cFCard.cardBankName = CFCard.CardBankNameEnum.Test;
-        cFCard.cardNumber = "4111111111111111";
-        cFCard.cardCvv = "123";
-        cFCard.cardExpiryMm = "12";
-        cFCard.cardExpiryYy = "25";
+        cFCard.cardNumber = req.cardNumber;
+        cFCard.cardCvv = req.cardCvv;
+        cFCard.cardExpiryMm = req.cardExpiryMm;
+        cFCard.cardExpiryYy = req.cardExpiryYy;
         console.log(cFCard)
         const cFCardPayment = new CFCardPayment();
         cFCardPayment.card = cFCard;
@@ -104,14 +109,14 @@ app.post('/order/payWithCard', async(req,res) => {
 // "testsuccess@gocash"
 app.post('/order/payWithUPICollect', async(req,res) => {
     try {
-        let paymentSessionId = req.body.paymentSessionId
+        let payment_session_id = req.body.paymentSessionId
         var cfUpi = new CFUPI();
         cfUpi.channel = CFUPI.ChannelEnum.Collect;
         cfUpi.upiId = req.body.upiId;
         var cFUPIPayment = new CFUPIPayment();
         cFUPIPayment.upi = cfUpi;
         var cFOrderPayRequest = new CFOrderPayRequest();
-        cFOrderPayRequest.paymentSessionId = paymentSessionId;
+        cFOrderPayRequest.paymentSessionId = payment_session_id;
         cFOrderPayRequest.paymentMethod = cFUPIPayment;
         var apiInstance = new CFPaymentGateway();
         var cfPayResponse = await apiInstance.orderSessionsPay(
@@ -187,13 +192,14 @@ app.post('/order/payWithUPIQRCode', async(req,res) => {
         } catch (e) {
             console.log(e);
                     res.status(e.statusCode).json({error: e.body.message})
-        }
+        }h
 })
 
 app.post('/order/payWithNetBanking', async(req,res) => {
     
     try {
         let paymentSessionId = req.body.paymentSessionId
+        console.log(paymentSessionId)
         var cfnetBanking = new CFNetbanking();
         cfnetBanking.channel = "link";
         cfnetBanking.netbankingBankCode = 3003;
@@ -269,7 +275,7 @@ app.get('/order', async(req,res) => {
             order_id
         );
 
-        if (cfOrderResponse != null) {
+    if (cfOrderResponse != null) {
             console.log("result.OrderId");
             console.log(cfOrderResponse?.cfOrder?.orderId);
             console.log(cfOrderResponse?.cfOrder?.payments);
