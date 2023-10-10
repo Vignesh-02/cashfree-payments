@@ -1,5 +1,6 @@
-import dotenv from 'dotenv'
-import express from 'express';
+import dotenv from 'dotenv';
+import express from 'express';;
+import cors from 'cors'
 const app = express();
 const port = process.env.PORT || 3000; // Use port 3000 or a port defined in the environment variable
 
@@ -32,6 +33,8 @@ var testCfConfig = new CFConfig(
     process.env.secret
 );
 
+
+app.use(cors())
 // console.log(testCfConfig)
 app.use(express.json())
 
