@@ -52,6 +52,7 @@ app.post('/orders', async (req, res) => {
     cFOrderRequest.orderCurrency = "INR";
     cFOrderRequest.customerDetails = customerDetails;
     cFOrderRequest.orderTags = d;
+    cFOrderRequest.orderMeta.returnUrl = req.body.return_url;
     // cfOrderRequest.order_meta.return_url = "https://development.d39ljnmw1ahtx3.amplifyapp.com/client/funds/${order_id]"
     try {
         var apiInstance = new CFPaymentGateway();
