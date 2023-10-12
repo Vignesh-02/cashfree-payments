@@ -15,6 +15,7 @@ import {
     CFCard,
     CFCardPayment,
     CFUPI,
+    CFOrderMeta,
     CFUPIPayment,
     CFNetbanking,
     CFNetbankingPayment,
@@ -23,7 +24,8 @@ import {
     CFAppPayment,
     CFLinkCustomerDetailsEntity,
     CFLinkNotifyEntity,
-    CFLinkRequest
+    CFLinkRequest,
+    CFOrderMeta
 } from "cashfree-pg-sdk-nodejs";
 
 var testCfConfig = new CFConfig(
@@ -52,7 +54,9 @@ app.post('/orders', async (req, res) => {
     cFOrderRequest.orderCurrency = "INR";
     cFOrderRequest.customerDetails = customerDetails;
     cFOrderRequest.orderTags = d;
-    cFOrderRequest.orderMeta.returnUrl = req.body.return_url;
+    var orderMeta = new CFOrderMeta();
+    orderMeta.returnUrl = req.body.return_url;
+    cFOrderRequest.orderMeta = orderMeta
     // cfOrderRequest.order_meta.return_url = "https://development.d39ljnmw1ahtx3.amplifyapp.com/client/funds/${order_id]"
     try {
         var apiInstance = new CFPaymentGateway();
