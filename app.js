@@ -15,7 +15,6 @@ import {
     CFCard,
     CFCardPayment,
     CFUPI,
-    CFOrderMeta,
     CFUPIPayment,
     CFNetbanking,
     CFNetbankingPayment,
