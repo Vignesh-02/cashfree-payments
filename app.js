@@ -86,10 +86,10 @@ app.post('/order/payWithCard', async(req,res) => {
         var cFCard = new CFCard();
         cFCard.channel = "link";
         cFCard.cardBankName = CFCard.CardBankNameEnum.Test;
-        cFCard.cardNumber = req.cardNumber;
-        cFCard.cardCvv = req.cardCvv;
-        cFCard.cardExpiryMm = req.cardExpiryMm;
-        cFCard.cardExpiryYy = req.cardExpiryYy;
+        cFCard.cardNumber = req.body.cardNumber;
+        cFCard.cardCvv = req.body.cardCvv;
+        cFCard.cardExpiryMm = req.body.cardExpiryMm;
+        cFCard.cardExpiryYy = req.body.cardExpiryYy;
         console.log(cFCard)
         const cFCardPayment = new CFCardPayment();
         cFCardPayment.card = cFCard;
