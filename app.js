@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
-import express from 'express';;
-import cors from 'cors'
+import express from 'express';
+import cors from 'cors';
+import axios from 'axios';
+
 const app = express();
-const port = process.env.PORT || 3000; // Use port 3000 or a port defined in the environment variable
+const port = process.env.PORT || 8081; // Use port 3000 or a port defined in the environment variable
 
 dotenv.config()
 import {
@@ -356,6 +358,180 @@ app.post('/paymentLinks', async(req,res) => {
     
     }
 })
+
+
+app.post('/subscription/plan',async (req,res) => {
+    const generateRandomNumber = () => {
+        const randomNumber = Math.floor(100000 + Math.random() * 900000);
+        return randomNumber.toString().substring(0, 6); // Ensure exactly 6 digits
+    };
+
+    const randomSixDigitNumber = generateRandomNumber();
+    
+        const data = {
+            "planId": `test-periodic-plan-${randomSixDigitNumber}` ,
+            "planName": `Plan test-periodic-plan-${randomSixDigitNumber}`,
+            "type": "PERIODIC",
+            "recurringAmount": req.body.recurringAmount,
+            "intervals": 1,
+            "intervalType": "month",
+            "maxAmount": 10000
+        }
+
+    try{
+
+        const response = await axios.post('https://test.cashfree.com/api/v2/subscription-plans',data, {
+            headers: {
+                "Content-Type": "application/json",
+                "X-Client-Id": process.env.subClientId,
+                "X-Client-Secret": process.env.subSecretKey
+            }
+        })
+
+        console.log(response.data);
+
+         res.status(200).send(response.data);
+    } catch(err){
+        console.log(err)
+        res.status(400).json({ error: err})
+    }
+})
+
+
+app.post('/subscriptionForPlan',async (req,res) => {
+
+    const getFormattedDate = () => {
+        const currentDate = new Date();
+        const futureDate = new Date(currentDate);
+        
+        // Set the date for two days from now
+        futureDate.setDate(currentDate.getDate() + 2);
+    
+        // Get year, month, and day
+        const year = futureDate.getFullYear();
+        const month = String(futureDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(futureDate.getDate()).padStart(2, '0');
+    
+        // Format the date as "yyyy-mm-dd"
+        const formattedDate = `${year}-${month}-${day}`;
+    
+        return formattedDate;
+    };
+    
+    const twoDaysFromNow = getFormattedDate();
+
+    const data = {
+        "subscriptionId": req.body.planId,
+        "planId": req.body.planId,
+        "customerName": "Vignesh K",
+        "customerPhone": "9821081677",
+        "customerEmail": "vignesh@onelabventures.com",
+        "returnUrl": "www.axcelate.onrender.com",
+        "authAmount": 1,
+        "firstChargeDate": twoDaysFromNow,
+        "expiresOn": "2024-12-02 00:00:00",
+        "notes": {
+            "key1": "value1",
+            "key1": "value1",
+            "key2": "value2",
+            "key3": "value3",
+            "key4": "value4"
+        },
+        "linkExpiry": 43200,
+        "notificationChannels": [
+            "EMAIL",
+            "SMS"
+        ]
+    }
+
+try{
+
+    const response = await axios.post('https://test.cashfree.com/api/v2/subscriptions/nonSeamless/subscription',data, {
+        headers: {
+            "Content-Type": "application/json",
+            "X-Client-Id": process.env.subClientId,
+            "X-Client-Secret": process.env.subSecretKey
+        }
+    })
+
+    console.log(response.data);
+
+     res.status(200).send(response.data);
+} catch(err){
+    console.log(err)
+    res.status(400).json({ error: err})
+}
+})
+
+app.get('/subscription/details',async (req,res) => {
+    
+    try{
+
+        const subId = req.body.subId;
+        const response = await axios.get(`https://test.cashfree.com/api/v2/subscriptions/${subId}`,{
+            headers: {
+                "Content-Type": "application/json",
+                "X-Client-Id": process.env.subClientId,
+                "X-Client-Secret": process.env.subSecretKey
+            }
+        })
+
+        console.log(response.data);
+
+         res.status(200).send(response.data);
+    } catch(err){
+        console.log(err)
+        res.status(400).json({ error: err})
+    }
+})
+
+app.put('/subscription/update',async (req,res) => {
+    
+    try{
+
+        const subId = req.body.subId;
+        const recurringAmount = req.body.recurringAmount
+        const response = await axios.put(`https://test.cashfree.com/api/v2/subscriptions/${subId}/recurring-amount`, {
+            recurringAmount
+        },{
+            headers: {
+                "Content-Type": "application/json",
+                "X-Client-Id": process.env.subClientId,
+                "X-Client-Secret": process.env.subSecretKey
+            }
+        })
+
+        console.log(response.data);
+
+         res.status(200).send(response.data);
+    } catch(err){
+        console.log(err)
+        res.status(400).json({ error: err})
+    }
+})
+
+app.get('/subscription/details',async (req,res) => {
+    
+    try{
+
+        const subId = req.body.subId;
+        const response = await axios.get(`https://test.cashfree.com/api/v2/subscriptions/${subId}`,{
+            headers: {
+                "Content-Type": "application/json",
+                "X-Client-Id": process.env.subClientId,
+                "X-Client-Secret": process.env.subSecretKey
+            }
+        })
+
+        console.log(response.data);
+
+         res.status(200).send(response.data);
+    } catch(err){
+        console.log(err)
+        res.status(400).json({ error: err})
+    }
+})
+
 
 
 // Start the server
