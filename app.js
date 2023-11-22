@@ -510,7 +510,7 @@ app.put('/subscription/update',async (req,res) => {
     }
 })
 
-app.post('/subscription/details',async (req,res) => {
+app.get('/subscription/details',async (req,res) => {
     
     try{
 
