@@ -532,7 +532,7 @@ app.get('/subscription/details',async (req,res) => {
     }
 })
 
-app.get('/subscription/cancel',async (req,res) => {
+app.post('/subscription/cancel',async (req,res) => {
     
     try{
 
