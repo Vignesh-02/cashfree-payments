@@ -432,7 +432,6 @@ app.post('/subscriptionForPlan',async (req,res) => {
         "expiresOn": "2024-12-02 00:00:00",
         "notes": {
             "key1": "value1",
-            "key1": "value1",
             "key2": "value2",
             "key3": "value3",
             "key4": "value4"
@@ -462,6 +461,7 @@ try{
     res.status(400).json({ error: err})
 }
 })
+
 
 app.get('/subscription/details',async (req,res) => {
     
@@ -531,6 +531,30 @@ app.get('/subscription/details',async (req,res) => {
         res.status(400).json({ error: err})
     }
 })
+
+app.get('/subscription/cancel',async (req,res) => {
+    
+    try{
+
+        const subId = req.body.subId;
+        const response = await axios.get(`https://test.cashfree.com/api/v2/subscriptions/${subId}/cancel`,{
+            headers: {
+                "Content-Type": "application/json",
+                "X-Client-Id": process.env.subClientId,
+                "X-Client-Secret": process.env.subSecretKey
+            }
+        })
+
+        console.log(response.data);
+
+         res.status(200).send(response.data);
+    } catch(err){
+        console.log(err)
+        res.status(400).json({ error: err})
+    }
+})
+
+
 
 
 
