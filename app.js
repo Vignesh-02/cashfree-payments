@@ -426,7 +426,7 @@ app.post('/subscriptionForPlan',async (req,res) => {
         "customerName": "Vignesh K",
         "customerPhone": "9821081677",
         "customerEmail": "vignesh@onelabventures.com",
-        "returnUrl": "www.axcelate.onrender.com",
+        "returnUrl": "https://www.axcelate.onrender.com",
         "authAmount": 1,
         "firstChargeDate": twoDaysFromNow,
         "expiresOn": "2024-12-02 00:00:00",
