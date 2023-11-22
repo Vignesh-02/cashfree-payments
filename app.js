@@ -537,7 +537,7 @@ app.post('/subscription/cancel',async (req,res) => {
     try{
 
         const subId = req.body.subId;
-        const response = await axios.get(`https://test.cashfree.com/api/v2/subscriptions/${subId}/cancel`,{
+        const response = await axios.post(`https://test.cashfree.com/api/v2/subscriptions/${subId}/cancel`,{
             headers: {
                 "Content-Type": "application/json",
                 "X-Client-Id": process.env.subClientId,
