@@ -375,7 +375,7 @@ app.post('/subscription/plan',async (req,res) => {
             "recurringAmount": req.body.recurringAmount,
             "intervals": 1,
             "intervalType": "month",
-            "maxAmount": 10000
+            "maxAmount": 10000000
         }
 
     try{
