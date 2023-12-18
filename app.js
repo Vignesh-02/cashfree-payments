@@ -276,7 +276,7 @@ app.post('/order/payWithAppWallet', async(req,res) => {
 })
 
 
-app.get('/order', async(req,res) => {
+app.post('/order', async(req,res) => {
     try {
         let order_id = req.body.order_id
         var apiInstance = new CFPaymentGateway();
@@ -299,7 +299,7 @@ app.get('/order', async(req,res) => {
 })
 
 
-app.get('/order/payments', async(req,res) => {
+app.post('/order/payments', async(req,res) => {
     try {
         let order_id = req.body.order_id
         var apiInstance = new CFPaymentGateway();
@@ -463,7 +463,7 @@ try{
 })
 
 
-app.get('/subscription/details',async (req,res) => {
+app.post('/subscription/details',async (req,res) => {
     
     try{
 
